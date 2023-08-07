@@ -49,8 +49,11 @@ public class AccountViewServlet extends HttpServlet {
         if (request.getRequestURL().toString().endsWith("showTransactions")) {
             String startTime = request.getParameter("startDate");
             String endTime = request.getParameter("endDate");
+            // si ipotizza questo formato data
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date startDate = df.parse(startTime);
+            Date endDate = df.parse(endTime)
 
-            LOG.info("Transactions within '" + startTime + "' and '" + endTime + "'.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/bank/transaction.jsp?" + ((startTime != null) ? "&startTime=" + startTime : "") + ((endTime != null) ? "&endTime=" + endTime : ""));
             dispatcher.forward(request, response);
         }
