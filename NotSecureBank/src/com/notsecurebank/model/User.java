@@ -94,6 +94,8 @@ public class User implements java.io.Serializable {
         return DBUtil.hasGoldVisaDelivery(username);
     }
 
+    // nel precedente commit ho pushato come se questa modifica fosse per la V8 invece è per la V9
+    // quindi aggiungo questo nuovo commento per committare con il commit corretto
     public boolean isPreApprovedForGoldVisa() {
         return DBUtil.isPreApprovedForGoldVisa(username);
     }
