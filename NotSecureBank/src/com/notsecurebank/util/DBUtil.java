@@ -135,6 +135,39 @@ public class DBUtil {
         return hasGoldVisaDelivery;
     }
 
+    public static boolean isPreApprovedForGoldVisa(String username) {
+        LOG.debug("isPreApprovedForGoldVisa('" + username + "')");
+
+        if (username == null || username.trim().length() == 0) {
+            return true;
+        }
+        boolean isPreApprovedForGoldVisa = false;
+
+        try {
+
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM GOLD_VISA_DELIVERY WHERE USER_ID = ? AND <NOME_COLONNA> = ?");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, "Y"); // si ipotizza che nel db ci sia una colonna che specifica che quella visa sia pre approvata nella tabella GOLD_VISA_DELIVERY
+                                                 // Y => yes
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                if (resultSet.getInt(1) > 0) {
+                    isPreApprovedForGoldVisa = true;
+                }
+            }
+
+        } catch (Exception e) {
+            isPreApprovedForGoldVisa = true;
+            LOG.error(e.toString());
+        }
+
+        return isPreApprovedForGoldVisa;
+    }
+
+
     public static boolean setGoldVisaDelivery(String username) {
         LOG.debug("setGoldVisaDelivery('" + username + "')");
 
