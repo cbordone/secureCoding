@@ -106,6 +106,7 @@ public class OperationsUtil {
         email = StringEscapeUtils.escapeSql(email);
         subject = StringEscapeUtils.escapeSql(subject);
         comments = StringEscapeUtils.escapeSql(comments);
+        // in questo modo copriamo sia la V5 che la V7
         comments = ServletUtil.sanitizeHtmlWithRegex(comments);
 
         long id = DBUtil.storeFeedback(name, email, subject, comments);
