@@ -299,4 +299,20 @@ public class ServletUtil {
         request.getSession().setAttribute("specialPrizeCode", specialPrizeCode);
         return specialPrizeCode;
     }
+
+    // Genera un CSRF token ad ogni request e lo salva in session
+    public static String generateCSRFToken(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        String token = UUID.randomUUID().toString();
+        session.setAttribute("csrfToken", token);
+        return token;
+    }
+
+    // Check csrf token
+    public static boolean verifyCSRFToken(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String sessionToken = (String) session.getAttribute("csrfToken");
+        return request.getParameter("csrfToken") != null
+                && request.getParameter("csrfToken").equals(sessionToken);
+    }
 }
