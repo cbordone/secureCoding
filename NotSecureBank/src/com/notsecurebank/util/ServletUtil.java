@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -226,6 +225,29 @@ public class ServletUtil {
             // Check user is logged in
             User user = (User) request.getSession().getAttribute(ServletUtil.SESSION_ATTR_USER);
             if (user == null) {
+                LOG.info("False.");
+                return false;
+            }
+        } catch (Exception e) {
+            LOG.error(e.toString());
+            LOG.info("False.");
+            return false;
+        }
+
+        LOG.info("True.");
+        return true;
+    }
+
+    static public boolean isLoggedinAdmin(HttpServletRequest request) {
+        LOG.info("Is logged in?");
+
+        try {
+            // Check user is logged in
+            User user = (User) request.getSession().getAttribute(ServletUtil.SESSION_ATTR_USER);
+            Object admObj = request.getSession().getAttribute(ServletUtil.SESSION_ATTR_ADMIN_KEY);
+            if ((user != null && user.getRole() == Role.Admin)
+                    || (admObj != null && admObj instanceof String
+                    && ((String) admObj).equals(ServletUtil.SESSION_ATTR_ADMIN_VALUE))) {
                 LOG.info("False.");
                 return false;
             }
